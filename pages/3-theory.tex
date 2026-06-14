@@ -1,0 +1,163 @@
+\newpage
+\section{АНАЛИТИЧЕСКИЙ ОБЗОР ЛИТЕРАТУРЫ}
+
+Ниже приведён пример оформления аналитического обзора литературы и цитирования источников. Обзорная статья
+Smith et al. (2024) \cite{example_article} иллюстрирует ссылку на научную статью. Электронный ресурс
+Example web page title \cite{example_misc} иллюстрирует ссылку на интернет-источник.
+
+\subsection{Пример подраздела 1}
+
+\subsubsection{Пример формул}
+
+Ниже приведён пример оформления формул в тексте работы.
+
+В качестве иллюстрации приведена формализация задачи сопоставления элементов данных с классами иерархической структуры.
+
+Задача формализуется следующим образом.
+
+Дано:
+
+Задан корпус документов
+\begin{equation}
+    \mathcal{D} = \{d_1, d_2, \ldots, d_Q\},
+\end{equation}
+\noindent где $Q$ - число документов.
+
+Каждый документ $d_i$ после сегментации представляется множеством фрагментов
+\begin{equation}
+    S_i = \{s_{i,1}, s_{i,2}, \ldots, s_{i,K_i}\},
+\end{equation}
+\noindent где $K_i$ - число сегментов документа $d_i$.
+
+Задана иерархическая структура классов
+\begin{equation}
+    \mathcal{O} = (\mathcal{C}, \mathcal{E}),
+\end{equation}
+\noindent где $\mathcal{C}$ - множество узлов (классов), $\mathcal{E}$ - множество дуг иерархии «дочерний узел -
+родительский узел». Узлы разбиваются по уровням
+\begin{equation}
+    \mathcal{C} = \mathcal{C}_{L1} \cup \mathcal{C}_{L2} \cup \mathcal{C}_{L3},
+\end{equation}
+\noindent где $\mathcal{C}_{L1}$, $\mathcal{C}_{L2}$ и $\mathcal{C}_{L3}$ - соответственно классы 1-го, 2-го уровня и листовые классы.
+
+Найти:
+
+Отображение $A_{\theta}$, параметризованное набором параметров $\theta$ и ставящее в соответствие паре $(d_i,\mathcal{O})$
+итоговый результат на уровне документа.
+Он задается как упорядоченный набор из $N_{\text{out}}$ пар
+«листовой класс - суммарная оценка принадлежности класса документу»
+\begin{equation}
+    \label{eq:doc-annotation}
+    A_{\theta}(d_i,\mathcal{O}) =
+    \Bigl(
+    \bigl(c_{1},\, \mathrm{score}(d_i,c_{1})\bigr),
+    \ldots,
+    \bigl(c_{N_{\text{out}}},\, \mathrm{score}(d_i,c_{N_{\text{out}}})\bigr)
+    \Bigr),
+\end{equation}
+\noindent где $c_{1},\ldots,c_{N_{\text{out}}}$ - первые $N_{\text{out}}$ листовых узлов
+при упорядочивании $\mathcal{C}_{L3}$ по убыванию $\mathrm{score}(d_i,c)$
+
+\begin{equation}
+    \label{eq:topn-specs}
+    (c_{1},\ldots,c_{N_{\text{out}}}) =
+    \operatorname{TopN}\!\left(
+    \operatorname{argsort}_{c\in\mathcal{C}_{L3}}\, \mathrm{score}(d_i,c)
+    \right).
+\end{equation}
+
+Суммарная оценка принадлежности листового класса $c\in\mathcal{C}_{L3}$ документу $d_i$
+\begin{equation}
+    \label{eq:doc-score-sum}
+    \mathrm{score}(d_i,c)=
+    \sum_{s\in S_i} a(s,c),
+\end{equation}
+\noindent где $a(s,c)$ - оценка близости сегмента $s$ и класса $c$.
+
+Качество отображения оценивается на валидационной выборке $\mathcal{D}_{\mathrm{val}}$ по метрике Recall@$K$
+\begin{equation}
+\mathrm{Recall@K}(A_{\theta})=
+\frac{1}{|\mathcal{D}_{\mathrm{val}}|}
+\sum_{d_i\in\mathcal{D}_{\mathrm{val}}}
+\frac{\left|Y_i \cap \operatorname{Top}_{K}\!\bigl(A_{\theta}(d_i,\mathcal{O})\bigr)\right|}{|Y_i|},
+\end{equation}
+\noindent где $Y_i\subseteq\mathcal{C}_{L3}$ - множество истинных классов документа $d_i$.
+
+Тогда задача оптимизации заключается в нахождении оптимального набора параметров
+\begin{equation}
+\theta^{*}=\arg\max_{\theta\in\Theta}\mathrm{Recall@K}(A_{\theta}),
+\end{equation}
+\noindent где $\Theta$ - множество допустимых значений параметров $\theta$.
+
+Используется функция кодирования
+\begin{equation}
+E: \mathcal{X} \rightarrow \mathbb{R}^{m},
+\end{equation}
+\noindent где $\mathcal{X}$ - пространство входных объектов, $m$ - размерность векторного представления.
+
+Для сегмента $s$ и представления узла $c$ рассчитываются векторы
+\begin{equation}
+e(s)=E(s),\qquad v(c)=E(t_c),
+\end{equation}
+\noindent где $t_c$ - текстовое описание узла $c$.
+
+Оценка $a(s,c)$ - косинусная близость $e(s)$ и $v(c)$
+\begin{equation}
+\label{eq:a-cosine}
+a(s,c) =
+\frac{e(s)\cdot v(c)}{\|e(s)\|\,\|v(c)\|}.
+\end{equation}
+
+Для классов 2-го уровня оценки листовых классов аккумулируются на уровень 2
+\begin{equation}
+W^{(2)}_{i}(p) = \sum_{c \in \mathcal{C}_{L3}: \operatorname{parent}(c)=p} \mathrm{score}(d_i,c), \quad p \in \mathcal{C}_{L2},
+\end{equation}
+\noindent где $p$ - класс 2-го уровня, $\mathcal{C}_{L3}$ - множество листовых классов, $\operatorname{parent}(c)$ - родительский узел листового класса $c$.
+
+Аналогично для классов первого уровня
+\begin{equation}
+W^{(1)}_{i}(g) = \sum_{p \in \mathcal{C}_{L2}: \operatorname{parent}(p)=g} W^{(2)}_{i}(p), \quad g \in \mathcal{C}_{L1},
+\end{equation}
+\noindent где $g$ - класс 1-го уровня, $\mathcal{C}_{L2}$ - множество классов 2-го уровня.
+
+Таким образом выводится результат для классов 1-го и 2-го уровня
+\begin{equation}
+A^{(2)}(d_i,\mathcal{O})=
+\operatorname{TopN}\!\left(
+\operatorname{argsort}_{p\in\mathcal{C}_{L2}}\, W_i^{(2)}(p)
+\right),
+\end{equation}
+\begin{equation}
+A^{(1)}(d_i,\mathcal{O})=
+\operatorname{TopN}\!\left(
+\operatorname{argsort}_{g\in\mathcal{C}_{L1}}\, W_i^{(1)}(g)
+\right).
+\end{equation}
+
+Ниже приведён пример оформления формул внутри нумерованного перечисления:
+
+\begin{enumerate}
+    \item precision@K: доля корректно классифицированных сегментов среди топ-K предсказаний,
+
+    \item recall@K: доля сегментов, для которых правильный класс находится в топ-K,
+
+    \item mean Reciprocal Rank (MRR).
+    \begin{equation}
+    \text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i},
+    \end{equation}
+    \noindent где $\text{rank}_i$ - позиция первого корректного результата для $i$-го запроса;
+
+    \item mean Average Precision (MAP@K).
+    \begin{equation}
+    \text{MAP@K} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \text{AP@K}_i = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{K} \sum_{k=1}^{K} P(k) \times \text{rel}(k),
+    \end{equation}
+    \noindent где $P(k)$ - точность на позиции $k$, $\text{rel}(k)$ - релевантность результата на позиции $k$ (0 или 1).
+\end{enumerate}
+
+\subsubsection{Пример подпункта 1.2}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+\subsection{Пример подраздела 2}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.

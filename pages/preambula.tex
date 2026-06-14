@@ -1,0 +1,271 @@
+
+%%% Преамбула %%%
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb,amsfonts,amsmath,cite,enumerate,float,indentfirst} %пакеты расширений
+\usepackage[dvips]{graphicx} %вставка графики
+\usepackage[main=russian,english]{babel}
+\usepackage{fontspec}
+\setmainfont[
+BoldFont={timesnewromanbold.ttf},
+ItalicFont={timesnewromanitalic.ttf},
+BoldItalicFont={timesnewromanbolditalic.ttf}
+]{timesnewroman.ttf}
+\usepackage{bm}
+\usepackage{cmap}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{amsmath}
+\usepackage{mathtools,cuted}
+\usepackage{multicol}
+\usepackage{tabstackengine}
+\usepackage{fancybox,framed}
+\usepackage{xpatch, nccmath}
+\usepackage{lastpage}
+\usepackage{totcount}
+\usepackage{float}
+\xpatchcmd{\NCC@ignorepar}{%
+	\abovedisplayskip\abovedisplayshortskip}
+{%
+	\abovedisplayskip\abovedisplayshortskip%
+	\belowdisplayskip\belowdisplayshortskip}
+{}{}
+\usepackage[onehalfspacing]{setspace} % полуторный интервал по всему документу (см. setspace)
+\AtBeginDocument{%
+  % Единый вертикальный интервал до и после всех display-формул (equation, align и т.д.)
+  \setlength{\abovedisplayskip}{\baselineskip}%
+  \setlength{\belowdisplayskip}{\baselineskip}%
+  \setlength{\abovedisplayshortskip}{\baselineskip}%
+  \setlength{\belowdisplayshortskip}{\baselineskip}%
+  % Единый вертикальный интервал вокруг рисунков
+  \setlength{\intextsep}{\baselineskip}%
+  \setlength{\textfloatsep}{\baselineskip}%
+  \setlength{\floatsep}{\baselineskip}%
+}
+\AtBeginEnvironment{figure}{\addvspace{\baselineskip}}
+\stackMath
+\usepackage[most]{tcolorbox}
+\usepackage[figurename=Рисунок]{caption}
+\usepackage{systeme}
+\DeclareCaptionLabelSeparator{dblhyphen}{ -- }
+\captionsetup[table]{%
+  justification=raggedright,
+  singlelinecheck=false,
+  position=top,
+  font={stretch=1},
+  labelsep=dblhyphen,
+  skip=0pt,
+  aboveskip=0pt,
+  belowskip=\baselineskip
+}
+\usepackage[hidelinks]{hyperref}
+% \url в списке литературы и note: без «курсивного» моноширинного начертания — как основной текст
+\AtBeginDocument{\urlstyle{rm}}
+% Пакет для изображений
+\usepackage{graphicx}
+\usepackage{pdfpages} % первая страница из готового PDF (титульник)
+\graphicspath{ {./images/} }
+\newenvironment{Figure}
+{\par\medskip\noindent\minipage{\linewidth}}
+{\endminipage\par\medskip}
+\makeatletter
+\renewcommand{\@biblabel}[1]{#1.} % Заменяем библиографию с квадратных скобок на точку:
+\makeatother
+\sloppy             % Избавляемся от переполнений
+\hyphenpenalty=1000000 % Частота переносов
+\clubpenalty=1000000  % Запрещаем разрыв страницы после первой строки абзаца
+\widowpenalty=1000000 % Запрещаем разрыв страницы после последней строки абзаца
+\usepackage{changepage}% http://ctan.org/pkg/changepage
+\usepackage[nopar]{lipsum}
+% Отступы у страниц
+\usepackage[margin=3cm]{geometry}
+\geometry{left=3cm}
+\geometry{right=1.5cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+\parindent 1.25cm % Абзацный отступ
+% Оформление библиографии и подрисуночных записей через точку
+\makeatletter
+\renewcommand*{\@biblabel}[1]{\hfill#1.}
+\renewcommand*\l@section{\@dottedtocline{1}{1em}{1em}}
+\renewcommand{\thefigure}{\arabic{figure}} % Формат рисунка секция.номер
+\renewcommand{\thetable}{\arabic{table}} % Формат таблицы секция.номер
+\def\redeflsection{\def\l@section{\@dottedtocline{1}{0em}{10em}}}
+\usepackage{listings}
+\lstset{
+	language=Python,
+	basicstyle=\small\ttfamily,
+	columns=fullflexible,
+	breaklines=true,
+	breakatwhitespace=true,
+	keepspaces=true,
+	tabsize=4,
+	showstringspaces=false
+}
+\usepackage{enumitem}
+\setlist[itemize]{
+	label=-,
+	labelindent=0pt,
+	leftmargin=0pt,
+	labelwidth=0pt,
+	labelsep=0.5em,
+	itemindent=1.5cm,
+	listparindent=0pt,
+	topsep=0pt,
+	partopsep=0pt,
+	parsep=0pt,
+	itemsep=0pt,
+	align=left
+}
+\setlist[enumerate]{
+	label=\arabic*),
+	labelindent=0pt,
+	leftmargin=0pt,
+	labelwidth=0pt,
+	labelsep=0.5em,
+	itemindent=1.5cm,
+	listparindent=0pt,
+	topsep=0pt,
+	partopsep=0pt,
+	parsep=0pt,
+	itemsep=0pt,
+	align=left
+}
+% TOC
+\addto\captionsrussian{% Replace "english" with the language you use
+	\renewcommand{\contentsname}%
+	{\centering  СОДЕРЖАНИЕ}%
+}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\usepackage{lipsum}
+\newlength{\normalparindent}
+\AtBeginDocument{\setlength{\normalparindent}{\parindent}}
+\titleformat{name=\section}[block]
+{\normalsize\bfseries}
+{\hspace*{\normalparindent}\thesection}
+{1ex}
+{}
+\titleformat{name=\section,numberless}[block]
+{\normalsize\bfseries\centering}
+{}
+{0pt}
+{}
+\titleformat{name=\subsection}[block]
+{\normalsize\bfseries}
+{\hspace*{\normalparindent}\thesubsection}
+{1ex}
+{}
+\titleformat{name=\subsection,numberless}[block]
+{\normalsize\bfseries}
+{}
+{0pt}
+{\hspace*{\normalparindent}}
+\titleformat{name=\subsubsection}[block]
+{\normalsize\bfseries}
+{\hspace*{\normalparindent}\thesubsubsection}
+{1ex}
+{}
+\titleformat{name=\subsubsection,numberless}[block]
+{\normalsize\bfseries}
+{}
+{0pt}
+{\hspace*{\normalparindent}}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+	% display heading, like subsubsection
+	{-3.25ex\@plus -1ex \@minus -.2ex}%
+	{1.5ex \@plus .2ex}%
+	{\normalfont\normalsize\bfseries}}
+\usepackage{tabularx}
+\usepackage{booktabs}
+% Формат подрисуночных записей
+\usepackage{chngcntr}
+\usepackage{ragged2e}
+%\usepackage{times}
+\newcolumntype{b}{X}
+\newcolumntype{s}{>{\raggedleft\hsize=.25\hsize}X}
+\newcolumntype{h}{>{\raggedleft\hsize=.5\hsize}X}
+\newcolumntype{w}{>{\raggedleft\hsize=.01\hsize}X}
+\newcolumntype{t}{>{\raggedleft\hsize=.03\hsize}X}
+\newcolumntype{i}{>{\raggedleft\hsize=.05\hsize}X}
+\newcolumntype{o}{>{\raggedleft\hsize=.14\hsize}X}
+\captionsetup[figure]{%
+  labelsep=dblhyphen,
+  justification=centering,
+  singlelinecheck=false,
+  font={stretch=0.86}
+}
+\newcommand{\mycaption}[1]
+{
+	\centering
+	 \caption[#1]{#1}
+}
+\newcommand{\imgh}[2] {
+	\begin{figure}[h!]
+		\center{
+			\includegraphics[width=0.75\linewidth]{#1}}
+		\mycaption{#2}
+		\label{ris:#1}
+	\end{figure}
+}
+\newcommand{\imghsize}[3] {
+	\begin{figure}[h!]
+		\center{
+			\includegraphics[width={#3}\linewidth]{#1}}
+		\mycaption{#2}
+		\label{ris:#1}
+	\end{figure}
+}
+\newcommand{\underlinestr}[2][10pt]{%
+  \begingroup
+  \fontsize{#1}{#1}\selectfont
+  \ttfamily
+  \def\temp{}%
+  \count255=0
+  \loop\ifnum\count255<#2
+    \edef\temp{\temp\_}
+    \advance\count255 1
+  \repeat
+  \temp
+  \endgroup
+}
+\newcommand{\headerline}[3]{%
+	\par\medskip\noindent
+	\makebox[0pt][l]{#1}%
+	\makebox[\textwidth][c]{#2}%
+	\makebox[0pt][r]{\texttt{#3}}\par\medskip}
+\newcommand{\HRule}{\rule{\linewidth}{0.3mm}} % Defines a new command for horizontal lines, change thickness here
+\setcounter{page}{4} % Начало нумерации страниц
+\regtotcounter{figure}
+\regtotcounter{table}
+\regtotcounter{equation}
+\newtotcounter{bibitems}
+\pretocmd{\bibitem}{\stepcounter{bibitems}}{}{}
+\usepackage{tocbasic}
+
+\DeclareTOCStyleEntries[
+raggedentrytext,
+linefill=\TOCLineLeaderFill,
+indent=0pt,
+numwidth=0pt,
+numsep=0.5em,
+dynnumwidth
+]{tocline}{chapter,section}
+\DeclareTOCStyleEntries[
+raggedentrytext,
+linefill=\TOCLineLeaderFill,
+indent=1em,
+dynnumwidth,
+numsep=1ex
+]{tocline}{subsection}
+\DeclareTOCStyleEntries[
+raggedentrytext,
+linefill=\TOCLineLeaderFill,
+indent=2em,
+dynnumwidth,
+numsep=0.5ex
+]{tocline}{subsubsection}
+
+\titlespacing*{\subsection}{0pt}{\baselineskip}{\baselineskip}
+\titlespacing*{\subsubsection}{0pt}{\baselineskip}{\baselineskip}
+\titlespacing*{\section}{0pt}{\baselineskip}{\baselineskip}
+\titlespacing*{\equation}{0pt}{\baselineskip}{\baselineskip}

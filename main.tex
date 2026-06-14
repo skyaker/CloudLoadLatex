@@ -1,0 +1,57 @@
+\documentclass[a4paper,14pt,english,russian]{extarticle} % А4, базовый кегль 14 pt (у article нет опции 14pt)
+
+\input{pages/preambula.tex}
+
+\begin{document}
+	\includepdf[pages=1,pagecommand={\thispagestyle{empty}}]{front_pages/titul.pdf}
+    \includepdf[pages=1,pagecommand={\thispagestyle{empty}}]{front_pages/diploma_task.pdf}
+    \includepdf[pages=2,pagecommand={\thispagestyle{empty}}]{front_pages/diploma_task.pdf}
+
+	\pagenumbering{arabic}
+    \setcounter{page}{4}
+     \input{pages/1-referat.tex}
+     \input{pages/1-abstract.tex}
+    \newpage
+	\tableofcontents % это оглавление, которое генерируется автоматически
+    
+    \input{pages/1-termins.tex}	
+    \input{pages/1-cuts.tex}	
+		
+	\input{pages/2-intro.tex}
+	
+	
+	\input{pages/3-theory.tex}
+    \input{pages/4-problem-statement}
+    \input{pages/5-math-formulation}
+    \input{pages/5-results}
+    \input{pages/6-conclusions}
+
+\newpage
+\section*{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}
+\addcontentsline{toc}{section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}
+
+\makeatletter
+\renewcommand{\@biblabel}[1]{#1.}
+\renewenvironment{thebibliography}[1]
+  {\list{\@biblabel{\@arabic\c@enumiv}}%
+        {\settowidth\labelwidth{\@biblabel{#1}}%
+         \leftmargin\z@
+         \labelsep=0.5em
+         \itemindent=1.75cm % костыль, почему то так получается равным оступам в остальном тексте (1.25cm)
+         \itemsep=0pt
+         \parsep=0pt
+         \usecounter{enumiv}%
+         \let\p@enumiv\@empty
+         \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+   \sloppy}
+  {\endlist}
+\makeatother
+\begingroup
+\renewcommand{\refname}{}
+\bibliographystyle{gost2008_local}  % локальная версия gost2008 с единым порядком авторов
+\bibliography{pages/bibliography}
+\endgroup
+
+    \input{pages/7-appendix}
+
+\end{document}

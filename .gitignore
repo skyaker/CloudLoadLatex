@@ -1,0 +1,5 @@
+auxil/
+**.gz
+.idea
+format_examples/
+local_data/
